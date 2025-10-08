@@ -1,0 +1,422 @@
+:root {
+  --navbar-height: 60px;
+}
+
+/* Gradient background fills the whole screen */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(203, 108, 230, 0.3) 0%,
+    rgba(135, 75, 253, 0.15) 40%,
+    #ffffff 100%
+  );
+  background-attachment: fixed;  /* gradient fixed */
+  overflow-x: hidden;            /* prevent bottom scrollbar */
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* ---------- Main container ---------- */
+.app-container {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  min-height: 100vh;
+  gap: 0px;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  background: transparent;
+  overflow-y: auto;
+}
+
+.left-panel .scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+
+/* ---------- Left panel ---------- */
+
+
+/* Padding between form content and scrollbar */
+.left-panel .form-group {
+  flex: 1;              /* fill remaining height */
+  overflow-y: auto;     /* scroll when content is too tall */
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+
+/* Thin scrollbar */
+.left-panel::-webkit-scrollbar {
+  width: 8px;
+}
+.left-panel::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 6px;
+}
+.left-panel::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 6px;
+}
+
+/* Headings */
+.left-panel h1 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+/* Form fields */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #D46CFA;
+  outline: none;
+  box-shadow: 0 0 8px rgba(212, 108, 250, 0.6);
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+/* Progress Bar */
+.progress-container {
+  width: 100%;
+  height: 10px;
+  background: #e6e6e6;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #702EF3, #a45df3);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 14px;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.helper-text {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 2px 0 6px 0;
+}
+
+/* Errors */
+.error-input {
+  border: 1px solid #e74c3c;
+  background-color: #ffeaea;
+}
+
+.error-text {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* ---------- Right panel ---------- */
+
+/* guide tour */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Sidebar wrapper */
+.sidebar-container {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;   
+  height: auto;     
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 64px;                  /* default collapsed width */
+  transition: width 0.28s ease;
+  background: rgba(255,255,255,0.95);
+  border-right: 1px solid #e6e6e6;
+  box-sizing: border-box;
+  height: calc(100vh - var(--navbar-height));
+  overflow: hidden;             /* hide content when collapsed */
+}
+
+/* Expanded / collapsed */
+.sidebar.open {
+  width: 350px;                 /* expanded width */
+  overflow: visible;            /* allow scrolling/content */
+}
+
+.sidebar.collapsed {
+  width: 64px;                  /* collapsed width */
+  overflow: hidden;             /* hide inner content */
+}
+
+/* Scrollable content inside sidebar */
+.sidebar-content {
+  padding: 24px;
+  padding-bottom: 30px;
+  height: 100%;
+  overflow-y: auto;             /* scroll if content too tall */
+  transition: opacity 0.3s ease;
+  box-sizing: border-box;
+}
+
+.sidebar.collapsed .sidebar-content {
+  opacity: 0;                   /* fade out content */
+  pointer-events: none;         /* disable interactions */
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: space-between; /* Toggle left, title right */
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  flex: 0 0 auto;
+}
+
+
+/* Toggle button always visible */
+.toggle-btn {
+  position: relative;
+  top: 20px;
+  right: -15px; /* stick out half circle */
+  width: 36px;
+  height: 36px;
+  display: flex;
+  border-radius: 50%;
+  background: #8750fd;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;   /* Bigger arrow */
+  font-weight: bold; /* Make arrow bold */
+  line-height: 1;    
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background 0.3s ease;
+  z-index: 10;
+  flex-direction: column;
+  padding: 5px;
+  justify-content: space-between;
+}
+.toggle-btn span {
+  display: block;
+  height: 3px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background: #7030f3;
+}
+.toggle-btn:hover { background: #7030f3; }
+
+.btn-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #cb6ce6, #874bfd);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(135, 75, 253, 0.3);
+  transition: background 0.2s ease, transform 0.15s ease;
+  gap: 6px;
+  position: fixed; 
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000; 
+}
+
+.btn-save:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-save:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-save:disabled {
+  background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+.btn-save:disabled:hover {
+  transform: none;
+}
+
+/* Spinner */
+.btn-save .spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.toast-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.app-header h1 {
+  font-family: 'Arial', sans-serif;  /* modern font */
+  font-weight: 700;
+  font-size: 2rem;                  /* responsive size */
+  background: linear-gradient(90deg, #7e4ed2); /* branding gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;  /* gradient text effect */
+  color: #7E57C2;                     /* fallback color */
+  letter-spacing: 1px;                 /* soft feel */
+  margin: 30px 0 40px 0;
+  text-align: center;
+  
+}
+
+.form-header {
+  text-align: center;
+  margin: 30px 0 40px 0;
+}
+
+
+.main-title {
+  font-family: 'Arial', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: #000; /* black text */
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+
+.project-title {
+  font-family: 'Arial', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;       /* smaller font */
+  color: #555;            /* subtle gray */
+  margin-top: 6px;
+  opacity: 0.8;           /* soft, modern look */
+}
+
+/* Buttons */
+.panel-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn.customize {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #8750fd;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn.customize:hover {
+  background-color: #7030f3;
+}
+
+.btn.export {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+}
+
+.btn.export:hover {
+  background-color: #e0e0e0;
+}
+
+.newly-added {
+  animation: inputGlow 2s ease-in-out;
+}
+
+@keyframes inputGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(135, 75, 253, 0);
+    border-color: #ccc;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(135, 75, 253, 0.8), 
+                0 0 40px rgba(135, 75, 253, 0.5),
+                inset 0 0 10px rgba(135, 75, 253, 0.3);
+    border-color: #874bfd;
+    transform: scale(1.02);
+  }
+}
